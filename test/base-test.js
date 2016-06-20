@@ -1,6 +1,6 @@
 var expect = require("chai").expect;
 var shiftNotes = require("../lib/base").shiftNotes;
-
+var isMusicNote = require("../lib/base").isMusicNote;
 describe("Base", function() {
   describe("shiftNotes", function() {
     it("Should return array of notes starting on given root", function() {
@@ -21,4 +21,16 @@ describe("Base", function() {
       expect(shiftNotes("!")).to.eql(undefined); //Bad root note parameter
     });
   });
+  describe("isMusicNote", function (){
+    it("Should evaluate if given note is valid", function () {
+      expect(isMusicNote("C")).to.eql(true);
+      expect(isMusicNote("C#")).to.eql(true);
+      expect(isMusicNote("C##")).to.eql(true);
+      expect(isMusicNote("Cb")).to.eql(true);
+      expect(isMusicNote("Cbb")).to.eql(true);
+      expect(isMusicNote("C#b")).to.eql(false);
+      
+    });
+  } );
 });
+
