@@ -1,8 +1,10 @@
 import {shiftNotes, circleOfFifths, majorKeys, minorKeys} from "./base";
 
-function Scale(tonic, scale) {
+function Scale(config) {
   if (!(this instanceof Scale))
-    return new Scale(tonic, scale);
+    return new Scale(config);
+  if (config === undefined || config.tonic === undefined || config.scale === undefined)
+    throw new Error("Invalid configuration supplied");
 
   var _notes = shiftNotes(tonic);
   this.tonic = tonic;
@@ -16,11 +18,35 @@ function Scale(tonic, scale) {
 //TODO construct Scale with accidents
 function _constructScale(tonic, scale) {
   var notes = shiftNotes(tonic);
+
   var numberofAccidents = scale.toUpperCase() === "MAJOR" ? majorKeys[tonic] : minorKeys[tonic];
-  var currentNoteIndex = numberofAccidents > 0 ? 0 : 6;
-  
+
+  var currentAccidentIndex = numberofAccidents > 0 ? 0 : 6;
+
+  switch(numberofAccidents > 0)
+    {
+        //#'s
+      case true:
+        for (; numberofAccidents !== 0; numberofAccidents--, currentAccidentIndex++) {
+          let cur = notes.indexOf(circleOfFifths[currentAccidentIndex]);
+          notes[cur] = `${notes[cur]}#`
+        }
+        break;
+        //b's
+      case false:
+        for (; numberofAccidents !== 0; numberofAccidents++, currentAccidentIndex--) {
+          let cur = notes.indexOf(circleOfFifths[currentAccidentIndex]);
+          notes[cur] = `${notes[cur]}#`
+        }
+        break;
+        //C Major / A Minor
+      default:
+        break;
+    }
+  return notes
 }
 
-_constructScale("B", "Major");
+let test = _constructScale("B", "Minor");
+console.log(test);
 
-export {Scale};
+export {Scale, _constructScale};

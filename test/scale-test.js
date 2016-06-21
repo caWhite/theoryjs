@@ -1,10 +1,10 @@
 var expect = require("chai").expect;
 var Scale = require("../lib/scale").Scale;
 
-describe("Major Scale", function() {
-  describe("Default Constructor", function() {
-    it("Should return new object of type Scale", function() {
-      expect(new Scale()).to.be.an.instanceof(Scale);
+describe("Scale", function() {
+  describe("Constructor", function() {
+    it("Should throw Error (no configuration object specified)", function() {
+      expect(Scale()).to.throw(Error);
     });
   });
 
