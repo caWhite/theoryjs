@@ -1,8 +1,8 @@
-var notes = ["C", "D", "E", "F", "G", "A", "B"];
+let notes = ["C", "D", "E", "F", "G", "A", "B"];
 
-var circleOfFifths = ["F", "C", "G", "D", "A", "E", "B"];
+let circleOfFifths = ["F", "C", "G", "D", "A", "E", "B"];
 
-var majorKeys = {
+let majorKeys = {
   "Cb": -7,
   "C": 0,
   "C#": 7,
@@ -20,27 +20,34 @@ var majorKeys = {
   "B": 5
 };
 
-var minorKeys = {
+let minorKeys = {
   "C": -3,
   "C#": 4,
   "D": -1,
+  "Eb": -6,
   "E": 1,
   "F": -4,
+  "F#": 3,
   "G": -2,
+  "G#": 5,
+  "Ab": -7,
   "A": 0,
+  "A#": 7,
   "B": 2
 };
+
+const scaleNames = ["MAJOR", "MINOR"];
 
 function shiftNotes(root) {
   if (!isMusicNote(root))
     return;
-  var rootIndex = notes.indexOf(root[0].toUpperCase());
-  var back = [];
-  var front = [];
-  for (var i = 0; i < rootIndex; i++) {
+  let rootIndex = notes.indexOf(root[0].toUpperCase());
+  let back = [];
+  let front = [];
+  for (let i = 0; i < rootIndex; i++) {
     back.push(notes[i]);
   }
-  for (var j = rootIndex; j < notes.length; j++) {
+  for (let j = rootIndex; j < notes.length; j++) {
     front.push(notes[j]);
   }
   return front.concat(back);
@@ -63,4 +70,4 @@ function isMusicNote(str) {
   return false;
 }
 
-export {notes, majorKeys, minorKeys, shiftNotes, isMusicNote, circleOfFifths};
+export {notes, majorKeys, minorKeys, shiftNotes, isMusicNote, circleOfFifths, scaleNames} ;

@@ -1,27 +1,29 @@
-import {shiftNotes, circleOfFifths, majorKeys, minorKeys} from "./base";
+import {shiftNotes, circleOfFifths, scaleNames, majorKeys, minorKeys, isMusicNote} from "./base";
+import _ from "lodash"
 
 function Scale(config) {
   if (!(this instanceof Scale))
     return new Scale(config);
   if (config === undefined || config.tonic === undefined || config.scale === undefined)
     throw new Error("Invalid configuration supplied");
+  if (!isMusicNote(config.tonic))
+    throw new Error("Invalid tonic note supplied");
+  if(typeof config.scale !== "string" || !_.includes(scaleNames, config.scale.toUpperCase()))
+    throw new Error("Invalid scale provided");
 
-  var _notes = shiftNotes(tonic);
-  this.tonic = tonic;
-  this.scale = scale;
+  this.scale = config.scale;
+  this.accidents = getNumberOfAccidents(config.tonic, config.scale);
+  let _notes = _constructScale(config.tonic, config.scale);
 
-  this.getNote = function(index) {
-    return index > 0 && index < 8 ? _notes[index - 1] : null;
-  };
+  Object.defineProperty(this, "notes", {value: _notes, enumerable: true})
+  Object.defineProperty(this, "tonic", {value: _notes[0], enumerable: true})
 }
 
 //TODO construct Scale with accidents
 function _constructScale(tonic, scale) {
-  var notes = shiftNotes(tonic);
-
-  var numberofAccidents = scale.toUpperCase() === "MAJOR" ? majorKeys[tonic] : minorKeys[tonic];
-
-  var currentAccidentIndex = numberofAccidents > 0 ? 0 : 6;
+  let notes = shiftNotes(tonic);
+  let numberofAccidents = scale.toUpperCase() === "MAJOR" ? majorKeys[tonic] : minorKeys[tonic];
+  let currentAccidentIndex = numberofAccidents > 0 ? 0 : 6;
 
   switch(numberofAccidents > 0)
     {
@@ -36,7 +38,7 @@ function _constructScale(tonic, scale) {
       case false:
         for (; numberofAccidents !== 0; numberofAccidents++, currentAccidentIndex--) {
           let cur = notes.indexOf(circleOfFifths[currentAccidentIndex]);
-          notes[cur] = `${notes[cur]}#`
+          notes[cur] = `${notes[cur]}b`
         }
         break;
         //C Major / A Minor
@@ -46,7 +48,10 @@ function _constructScale(tonic, scale) {
   return notes
 }
 
-let test = _constructScale("B", "Minor");
-console.log(test);
+function getNumberOfAccidents(tonic, scale){
+  if (scaleNames.indexOf(scale.toUpperCase()) === -1)
+    return
+  return scale.toUpperCase() === "MAJOR" ? majorKeys[tonic] : minorKeys[tonic];
+}
 
 export {Scale, _constructScale};
