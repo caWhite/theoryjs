@@ -11,12 +11,12 @@ describe("Scale", function() {
   describe("Parameterized Constructor", function() {
     it("Should return new Scale object in the given key", function() {
 
-      expect(new Scale({tonic: "A", scale: "Minor"})).to.eql({
+      expect(new Scale({tonic: "A", scale: "Minor"})).to.eql(Object.assign({
         notes: ["A", "B", "C", "D", "E", "F", "G"],
         accidentals: 0,
         scale: "Minor",
         tonic: "A"
-      });
+      }, Scale.prototype));
     });
   });
 });
