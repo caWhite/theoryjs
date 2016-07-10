@@ -11,11 +11,11 @@ function Scale(config) {
   if(typeof config.scale !== "string" || !_.includes(scaleNames, config.scale.toUpperCase()))
     throw new Error("Invalid scale provided");
 
-  this.scale = config.scale;
-  this.accidents = getNumberOfAccidents(config.tonic, config.scale);
   let _notes = _constructScale(config.tonic, config.scale);
 
+  Object.defineProperty(this, "scale", {value: config.scale, enumerable: true})
   Object.defineProperty(this, "notes", {value: _notes, enumerable: true})
+  Object.defineProperty(this, "accidentals", {value: getNumberOfAccidents(config.tonic, config.scale), enumerable: true})
   Object.defineProperty(this, "tonic", {value: _notes[0], enumerable: true})
 }
 
