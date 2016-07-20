@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --require babel-core/register",
     "build": "babel src -d lib",
     "watch": "concurrently --kill-others \"babel src -d lib --watch\" \"esw -w src --color\"",
     "lint": "esw -w --color src"
